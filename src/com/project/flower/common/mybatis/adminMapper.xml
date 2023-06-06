@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="admin">
+
+	<select id="selectMemberAll"
+		resultType="com.project.flower.admin.vo.MemberVO">
+		SELECT * FROM MEMBER
+	</select>
+	<select id="selectMemberOne" parameterType="string" resultType="com.project.flower.admin.vo.MemberVO">
+		SELECT * FROM MEMBER
+		WHERE USER_ID = #{userId}
+	</select>
+	<select id="memberAllPrice" parameterType="string" resultType="int">
+		SELECT SUM(TOT_PRICE) 
+		FROM PAYMENT
+		WHERE USER_ID = #{userId}
+	</select>
+	<select id="memberList" parameterType="int" resultType="com.project.flower.admin.vo.MemberVO">
+		SELECT *
+		FROM(SELECT ROWNUM R_NUM, F.*
+		FROM (SELECT *
+		FROM MEMBER
+		ORDER BY USER_REGDATE DESC
+		) F)
+		WHERE R_NUM BETWEEN #{begin} AND #{end}
+	</select>
+	<select id="orderNumList"
+		resultType="com.project.flower.admin.vo.OrderHistoryVO" parameterType="int">
+		SELECT * FROM ORDER_HISTORY
+		WHERE COMPLETE = #{complete}
+	</select>
+	
+	<select id="orderInfoList"
+		resultType="com.project.flower.admin.vo.OrderInfoVO" parameterType="int">
+		SELECT
+		P.PAYMENT_ID, P.PICK_DEL, M.USER_NAME,
+		M.USER_PHONE, M.USER_ADDR, P.F_ID,
+		P.CNT, P.TOT_PRICE, P.PAYMENT_DATE,
+		P.PICK_DAY, P.DEL_DAY, P.PAYMENT_SUDAN,
+		O.COMPLETE
+		FROM PAYMENT P , ORDER_HISTORY O, MEMBER M
+		WHERE P.PAYMENT_ID =
+		O.PAYMENT_ID
+		AND P.USER_ID = M.USER_ID
+		AND O.COMPLETE = #{complete}
+		ORDER BY PAYMENT_ID DESC
+	</select>
+	<select id="orderInfoList2"
+		resultType="com.project.flower.admin.vo.OrderInfoVO" parameterType="int">
+		SELECT * FROM(
+	    SELECT ROWNUM R_NUM,
+	    P.PAYMENT_ID, P.PICK_DEL, M.USER_NAME,
+	    M.USER_PHONE, M.USER_ADDR, P.F_ID,
+	    P.CNT, P.TOT_PRICE, P.PAYMENT_DATE,
+	    P.PICK_DAY, P.DEL_DAY, P.PAYMENT_SUDAN,
+	    O.COMPLETE
+	    FROM PAYMENT P , ORDER_HISTORY O, MEMBER M
+	    WHERE P.PAYMENT_ID = O.PAYMENT_ID
+	    AND P.USER_ID = M.USER_ID
+	    AND O.COMPLETE = #{complete}
+	    ORDER BY R_NUM
+	    ) WHERE R_NUM BETWEEN #{begin} AND #{end}
+	    ORDER BY PAYMENT_ID DESC
+	</select>
+	<update id="updateCompleteOrder" parameterType="int">
+		UPDATE
+		ORDER_HISTORY
+		SET COMPLETE = 1,
+		COMPLETE_DATE = SYSDATE
+		WHERE PAYMENT_ID = #{paymentId}
+	</update>
+
+
+	<select id="getProductList"
+		resultType="com.project.flower.admin.vo.FlowerVO" parameterType="int">
+		SELECT *
+		FROM FLOWER
+		WHERE F_CATEGORY = #{category}
+	</select>
+	
+	<select id="sgFlowerList" resultType="com.project.flower.admin.vo.FlowerVO" parameterType="int">
+		SELECT *
+		FROM(SELECT ROWNUM R_NUM, F.*
+		FROM (SELECT *
+		FROM FLOWER
+		WHERE F_CATEGORY = #{category}
+		) F )
+		WHERE R_NUM BETWEEN #{begin} AND #{end}
+		AND F_CATEGORY = #{category}
+	</select>
+	
+	<insert id="addProduct"
+		parameterType="com.project.flower.admin.vo.FlowerVO">
+		INSERT INTO FLOWER (
+		F_ID, F_NAME, F_PRICE, F_QUANT,
+		F_CATEGORY,
+		F_IMG, F_THUMBNAIL, F_INFO, F_STARPOINT
+		)
+		VALUES (
+		#{fId}, #{fName}, #{fPrice}, #{fQuant}, #{fCategory},
+		#{fImg},
+		#{fThumbnail}, #{fInfo}, 0
+		)
+	</insert>
+
+	<select id="salesInfoList"
+		resultType="com.project.flower.admin.vo.SalesInfoVO">
+		SELECT
+		TO_CHAR(P.PAYMENT_DATE,'YY') AS YEAR ,TO_CHAR(P.PAYMENT_DATE,'MM') AS MONTH,
+		TO_CHAR(P.PAYMENT_DATE,'DD') AS DAY,
+		F.F_ID, F.F_NAME, F.F_PRICE,
+		P.CNT, (F.F_PRICE * P.CNT) AS TOTAL_PRICE
+		FROM ORDER_HISTORY O, PAYMENT
+		P, FLOWER F
+		WHERE O.PAYMENT_ID = P.PAYMENT_ID
+		AND P.F_ID = F.F_ID
+		AND
+		O.COMPLETE = 1
+	</select>
+	<!-- 월별 데이터 검색 -->
+	<select id="monthInfoList"
+		resultType="com.project.flower.admin.vo.SalesInfoVO" parameterType="string">
+		SELECT
+		TO_CHAR(P.PAYMENT_DATE,'YY') AS YEAR ,TO_CHAR(P.PAYMENT_DATE,'MM') AS MONTH,
+		TO_CHAR(P.PAYMENT_DATE,'DD') AS DAY,
+		F.F_ID, F.F_NAME, P.F_PRICE,
+		P.CNT, (P.F_PRICE * P.CNT) AS TOTAL_PRICE
+		FROM ORDER_HISTORY O, PAYMENT
+		P, FLOWER F
+		WHERE O.PAYMENT_ID = P.PAYMENT_ID
+		AND P.F_ID = F.F_ID
+		AND
+		O.COMPLETE = 1
+		AND TO_CHAR(P.PAYMENT_DATE,'MM') = #{month}
+		ORDER BY DAY
+		DESC
+	</select>
+	<!-- 금일 데이터 검색 -->
+	<select id="dayInfoList"
+		resultType="com.project.flower.admin.vo.SalesInfoVO" parameterType="string">
+		SELECT
+		TO_CHAR(P.PAYMENT_DATE,'YY') AS YEAR ,TO_CHAR(P.PAYMENT_DATE,'MM') AS
+		MONTH, TO_CHAR(P.PAYMENT_DATE,'DD') AS DAY,
+		F.F_ID, F.F_NAME,
+		P.F_PRICE, P.CNT, (P.F_PRICE * P.CNT) AS TOTAL_PRICE
+		FROM ORDER_HISTORY
+		O, PAYMENT P, FLOWER F
+		WHERE O.PAYMENT_ID = P.PAYMENT_ID
+		AND P.F_ID =
+		F.F_ID
+		AND O.COMPLETE = 1
+		AND TO_CHAR(P.PAYMENT_DATE,'MM') =
+		TO_CHAR(SYSDATE,'MM')
+		AND TO_CHAR(P.PAYMENT_DATE,'DD') = #{day}
+		ORDER BY
+		DAY DESC
+	</select>
+	<select id="yearInfoList"
+		resultType="com.project.flower.admin.vo.SalesInfoVO" parameterType="string">
+		SELECT
+		TO_CHAR(P.PAYMENT_DATE,'YY') AS YEAR ,TO_CHAR(P.PAYMENT_DATE,'MM') AS
+		MONTH, TO_CHAR(P.PAYMENT_DATE,'DD') AS DAY,
+		F.F_ID, F.F_NAME,
+		P.F_PRICE, P.CNT, (P.F_PRICE * P.CNT) AS TOTAL_PRICE
+		FROM ORDER_HISTORY
+		O, PAYMENT P, FLOWER F
+		WHERE O.PAYMENT_ID = P.PAYMENT_ID
+		AND P.F_ID =
+		F.F_ID
+		AND O.COMPLETE = 1
+		AND TO_CHAR(P.PAYMENT_DATE,'YYYY') = #{year}
+		ORDER BY DAY DESC
+	</select>
+
+	<update id="flowerModify"
+		parameterType="com.project.flower.admin.vo.FlowerVO">
+		UPDATE FLOWER
+		SET F_QUANT = #{fQuant},
+		F_PRICE = #{fPrice}
+		WHERE F_ID = #{fId}
+	</update>
+	<update id="fInfoModify_ok" parameterType="com.project.flower.admin.vo.FlowerVO">
+		UPDATE FLOWER
+		SET F_INFO = #{fInfo}
+		WHERE F_ID = #{fId}
+	</update>
+	<delete id="flowerDelete" parameterType="string">
+		DELETE FROM FLOWER
+		WHERE F_ID = #{fId}
+	</delete>
+	
+	<select id="getFlower" parameterType="string" resultType="com.project.flower.admin.vo.FlowerVO">
+		SELECT F_CATEGORY
+		FROM FLOWER
+		WHERE F_ID=#{fId}
+	</select>
+	<select id="reviewAll" resultType="com.project.flower.admin.vo.ReviewVO">
+		SELECT REVIEW_NUM, USER_ID, F_ID, COMPLETE, C_COMMENT, 
+       	COMMENT_DATE, ADMIN_COMMENT, F_STARPOINT 
+		FROM REVIEW
+		ORDER BY COMMENT_DATE DESC
+	</select>
+	<select id="reviewList" parameterType="int" resultType="com.project.flower.admin.vo.ReviewVO">
+		SELECT *
+		FROM(SELECT ROWNUM R_NUM, F.*
+		FROM (SELECT *
+		FROM REVIEW
+		ORDER BY COMMENT_DATE DESC
+		) F)
+		WHERE R_NUM BETWEEN #{begin} AND #{end}
+	</select>
+	<select id="reviewOne" parameterType="int" resultType="com.project.flower.admin.vo.ReviewVO">
+		SELECT REVIEW_NUM, USER_ID, F_ID, COMPLETE, C_COMMENT, 
+       	COMMENT_DATE, ADMIN_COMMENT, F_STARPOINT 
+		FROM REVIEW
+		WHERE REVIEW_NUM = #{reviewNum}
+	</select>
+	
+	<update id="adminComment" parameterType="com.project.flower.admin.vo.ReviewVO">
+		UPDATE REVIEW
+		SET ADMIN_COMMENT = #{adminComment}
+		WHERE REVIEW_NUM = #{reviewNum}
+	</update>
+	
+	<update id="fImgModify_ok" parameterType="com.project.flower.admin.vo.FlowerVO">
+		UPDATE FLOWER
+		SET F_IMG = #{fImg}
+		WHERE F_ID = #{fId}
+	</update>
+	<update id="fThumbnailModify_ok" parameterType="com.project.flower.admin.vo.FlowerVO">
+		UPDATE FLOWER
+		SET F_THUMBNAIL = #{fThumbnail}
+		WHERE F_ID = #{fId}
+	</update>
+	<update id="updateStarpoint" parameterType="string">
+		UPDATE FLOWER
+		SET F_STARPOINT = NVL((SELECT ROUND(AVG(NVL(R.F_STARPOINT,0)),0) AS F_STARPOINT
+		FROM FLOWER F, REVIEW R
+		WHERE F.F_ID = R.F_ID
+		AND F.F_ID = #{fId}),0)
+		WHERE F_ID = #{fId}
+	</update>
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+

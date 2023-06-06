@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="adminPaging">
+	<select id="flowerTotCnt" parameterType="int" resultType="int">
+		SELECT COUNT(*) AS CNT
+		FROM FLOWER
+		WHERE F_CATEGORY = #{fCategory}
+	</select>
+	<select id="orderTotCnt" parameterType="int" resultType="int">
+		SELECT COUNT(*) AS CNT
+		FROM ORDER_HISTORY
+		WHERE COMPLETE = #{type}
+	</select>
+	<select id="reviewTotCnt" resultType="int">
+		SELECT COUNT(*) AS CNT
+		FROM REVIEW
+	</select>
+	<select id="memberTotCnt" resultType="int">
+		SELECT COUNT(*) AS CNT
+		FROM MEMBER
+	</select>
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+

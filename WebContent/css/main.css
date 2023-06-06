@@ -1,0 +1,134 @@
+@charset "UTF-8";
+
+a,a:hover{
+	color: black;
+}
+
+/* 전체화면 사이즈 조절*/
+.container{
+	min-width:1140px;
+	box-sizing: content-box;
+	padding:0;
+}
+
+/* 메인슬라이드 */
+.slide{
+    width: 1140px;
+    height: 428px;
+    overflow: hidden;
+}
+.slide_list{
+    width: 3420px;
+    height:428px;
+}
+.slide_list li{
+	width: 1140px;
+    height: 428px;
+    float:left;
+    position: relative;
+}
+.slide img{
+	/* width:1140px;
+	height: 428px; */
+	position:absolute;
+	display:block;
+}
+
+/* 아이템버튼 */
+.item{
+	padding: 50px 0;
+}
+.item_button{
+	display: block;
+	text-align: center;
+}
+.item_button button{
+	width: 357px;
+	height: 100px;
+	margin-right: 20px;
+	box-sizing: border-box;
+	font-size: 27px;
+	font-weight: 600;
+}
+.item_button button{
+	border-color: #666bcf;
+	color: #666bcf;
+}
+.item_button button:hover{
+	border: none;
+	background-color: #666bcf;
+	color: #fff;
+}
+.item_button button:nth-child(2){
+	border-color: #cebfee;
+	color: #cebfee;
+}
+.item_button button:nth-child(2):hover{
+	border: none;
+	background-color: #cebfee;
+	color: #fff;
+}
+.item_button button:last-child{
+	margin:0;
+}
+
+/* 핫아이템, 뉴아이템, 베스트아이템 */
+#hotitem, 
+#newitem, 
+#bestitem{
+	text-align: center;
+}
+.item img{
+	width:270px;
+	margin: 30px 20px;
+	border-radius: 30px;
+	box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.1);
+}
+.item table{
+	text-align: center;
+	margin: 0 auto;
+}
+.item>div>p{
+	font-size: 2rem;
+	color: #666BCF;
+	padding: 20px 0;
+	padding-top: 200px;
+	font-weight: 900;
+	/* text-decoration-line: underline; */
+ 	text-decoration-thickness: 5px;
+ 	text-align: center;
+	/* border-bottom: 2px solid #666BCF; */
+}
+#hotitem>p{
+	color: #f16772;
+}
+#newitem>p{
+	color: #f2be66;
+}
+#bestitem>p{
+	color: #6485f4;
+}
+#hotitem>p{
+	padding-top: 100px;
+}
+.itembox{
+	border: 2px solid #eee;
+	border-radius: 30px;
+	padding-bottom: 30px;
+}
+.itembox span{
+	font-size: 13px;
+	color: red;
+}
+.itembox p{
+	font-size: 20px;
+	font-weight: 600;
+	color: #333;
+}
+.itembox p:last-child{
+	font-size: 18px;
+	color: #5e5e5e;
+}
+#bestitem{
+	padding-bottom: 100px;
+}

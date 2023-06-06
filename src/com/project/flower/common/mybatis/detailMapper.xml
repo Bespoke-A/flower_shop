@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="detail">
+
+	<select id="detail" parameterType="string" resultType="detailVO">
+		SELECT * FROM FLOWER WHERE F_ID = #{fId}
+	</select>
+	<select id="detailReview" parameterType="string" resultType="com.project.flower.detail.vo.ReviewVO">
+		SELECT * FROM REVIEW WHERE F_ID = #{fId}
+	</select>
+</mapper>

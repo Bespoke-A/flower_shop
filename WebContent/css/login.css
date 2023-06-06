@@ -1,0 +1,50 @@
+@charset "UTF-8";
+
+body { overflow-y:scroll; }
+
+/* 기본설정 */
+*{padding:0; margin:0;}
+ul{list-style: none;}
+a{text-decoration: none; color: black;}
+a:hover{text-decoration: none;}
+html, body {height: 100%;}
+
+.container{
+	min-width: 1140px;
+	padding:0;
+}
+h4 span{
+	color: #CEBFEE; 
+	font-weight: 600;
+}
+.btn{
+	background-color: #CEBFEE; 
+	border-color: #CEBFEE; 
+	font-weight: 500;
+}
+.btn:hover{
+	background-color: #666BCF;
+	border-color: #666BCF; 
+	font-weight: 500;
+}
+.jumbotron{
+	padding-top: 200px;
+	background-color: #fff; 
+	border: 1px solid #eee; 
+	margin-bottom: 0;
+}
+.login{
+	padding:125px 0;
+}
+.sign ul{
+	text-align: center;
+}
+.sign ul li{
+	display: inline-block;
+}
+.sign ul li a, .gap{
+	font-size: 13px; color:#787878;
+}
+.sign ul li a:hover{
+	color:red;
+}

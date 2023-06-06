@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="main">
+	
+	<select id="memberLogin" resultType="memberVO" parameterType="memberVO">
+		SELECT * FROM MEMBER 
+		WHERE USER_ID = #{userId} AND USER_PWD = #{userPwd}
+	</select>
+	<select id="hotItemList" resultType="com.project.flower.main.vo.FlowerVO">
+		SELECT *
+		FROM(SELECT ROWNUM R_NUM, F.*
+		FROM (SELECT *
+		FROM FLOWER
+		ORDER BY F_STARPOINT DESC
+		) F)
+		WHERE R_NUM BETWEEN 1 AND 6
+	</select>
+	<select id="newItemList" resultType="com.project.flower.main.vo.FlowerVO">
+		SELECT *
+		FROM(SELECT ROWNUM R_NUM, F.*
+		FROM (SELECT *
+		FROM FLOWER
+		ORDER BY F_NAME DESC, F_CATEGORY
+		) F)
+		WHERE R_NUM BETWEEN 1 AND 6
+	</select>
+	<select id="bestItemList" resultType="com.project.flower.main.vo.FlowerVO">
+		SELECT *
+		FROM(SELECT ROWNUM R_NUM, F.*
+		FROM (SELECT *
+		FROM FLOWER
+		ORDER BY F_QUANT DESC, F_NAME
+		) F)
+		WHERE R_NUM BETWEEN 1 AND 6
+	</select>
+	<select id="flowerCategoryList" resultType="com.project.flower.main.vo.FlowerVO" parameterType="string">
+		SELECT *
+		FROM FLOWER
+		WHERE F_CATEGORY = #{category}
+	</select>
+	<select id="flowerSearchList" resultType="com.project.flower.main.vo.FlowerVO" parameterType="string">
+		SELECT *
+		FROM FLOWER
+		WHERE F_NAME LIKE('%'||#{fName}||'%')
+	</select>
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+

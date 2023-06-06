@@ -1,0 +1,57 @@
+@charset "UTF-8";
+.order {
+	padding: 100px;
+	margin: 0 auto;
+	width: 1000px;
+	margin:80px auto;
+	padding: 70px 30px;
+	border: 2px solid #eee;
+	border-radius: 30px;
+}
+.order h2 {
+	color: #5e5e5e;
+	font-weight: bold;
+	margin-top: -25px;
+	margin-bottom: 30px;
+}
+.table {
+	text-align: center;
+}
+.endBtn {
+	float: right;
+	margin-right: 20px;
+	border: none;
+	border-radius: 10px;
+	color: white;
+	background-color: #CEBFEE; 
+	border-color: #CEBFEE; 
+	font-weight: 500;
+	width: 120px;
+	height: 50px;
+	margin: 10px;
+}
+.endBtn:hover {
+	background-color: #666BCF;
+	border-color: #666BCF; 
+	font-weight: 500;
+}
+.table tr {
+	margin: 40px;
+}
+.table td {
+	font-size: 1.1em;
+	font-weight: 400;
+	border: 2px solid #eee;
+	border-bottom: none;
+	border-left: none;
+	padding-top: 20px;
+	padding-bottom: 15px;
+}
+.table td:last-child {
+	border-right: none;
+}
+#time, #datepicker {
+	width: 180px;
+	height: 30px;
+	font-size: nomal;
+}

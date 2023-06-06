@@ -1,0 +1,101 @@
+@charset "UTF-8";
+	.detail {
+		padding: 100px;
+		margin: 0 auto;
+		width: 1000px;
+		margin:80px auto;
+		padding: 70px 30px;
+		border: 2px solid #eee;
+		border-radius: 30px;
+	}
+	.info {
+		display: flex;
+		align-items: center;
+		margin-left: 20px;
+		margin-bottom: 20px;
+		text-align: center;
+	}
+	.info img {
+		margin-right: 20px;
+	}
+	
+	.name {
+		font-size: 35px;
+		margin-right:10px;
+		font-weight: bold;
+		border-bottom: 1px solid #eee;
+		padding: 20px;
+	}
+	.text {
+		font-size: 20px;
+	}
+	#price {
+		font-size: 20px;
+		font-weight: 500;
+		border-bottom: 1px solid #eee;
+		padding: 25px;
+	}
+	#quant {
+		color: red;
+		font-size: 15px;
+	}
+	#flowerInfo {
+		color: #CEBFEE;
+		font-weight: bold;
+	}
+	
+	.cnt {
+		margin: 30px;
+		text-align:center;
+	}
+	.cnt button {
+		border: none;
+		width: 30px;
+		height: 40px;
+	}
+	#orderNum {
+		text-align: center;
+		width: 120px;
+		height: 40px;
+		padding: 11px 0 9px 0; 
+		font-size: 15px;
+		font-weight: bold;
+		border: 1px solid #eee;
+	}
+	.orderBtn {
+		text-align:center;
+		margin-top: 30px;
+	}
+	#orderPrice {
+		font-size: 20px;
+		font-weight: 600;
+	}
+	.btn input {
+		border: none;
+		border-radius: 10px;
+		color: white;
+		background-color: #CEBFEE; 
+		border-color: #CEBFEE; 
+		font-weight: 500;
+		width: 200px;
+		height: 50px;
+		margin: 10px;
+	}
+	.btn input:hover {
+		background-color: #666BCF;
+		border-color: #666BCF; 
+		font-weight: 500;
+	}
+	#review {
+		border-bottom: 1px solid #eee;
+		padding: 20px;
+	}
+	#comment {
+		font-weight: bold;
+	}
+	#emptyReview {
+		text-align:center;
+		font-weight: bold;
+		margin: 80px;
+		padding-top: 30px;
+	}

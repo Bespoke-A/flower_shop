@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<settings>
+		<setting name="mapUnderscoreToCamelCase" value="true" />
+		<setting name="jdbcTypeForNull" value="NULL" />
+		<setting name="callSettersOnNulls" value="true"/>
+	</settings>
+	<typeAliases>
+		<typeAlias type="com.project.flower.main.vo.MemberVO" alias="memberVO"/>
+		<typeAlias type="com.project.flower.detail.vo.DetailVO" alias="detailVO"/>
+	</typeAliases>
+	<environments default="development">
+		<environment id="development">
+			<transactionManager type="JDBC" />
+			<dataSource type="POOLED">
+				<property name="driver" value="oracle.jdbc.OracleDriver" />
+				<property name="url"
+					value="jdbc:oracle:thin:@211.117.134.239:1521:xe" />
+				<property name="username" value="PROJECT_FLOWER" />
+				<property name="password" value="1111" />
+			</dataSource>
+		</environment>
+	</environments>
+	<mappers>
+		<mapper resource="com/project/flower/common/mybatis/adminMapper.xml" />
+		<mapper resource="com/project/flower/common/mybatis/adminPaging.xml" />
+		<mapper resource="com/project/flower/common/mybatis/mainMapper.xml" />
+		<mapper resource="com/project/flower/common/mybatis/detailMapper.xml" />
+		<mapper resource="com/project/flower/common/mybatis/memberMapper.xml" />
+	</mappers>
+
+</configuration>
+
+
+
+
+
+
+

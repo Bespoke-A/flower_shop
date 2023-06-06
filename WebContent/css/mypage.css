@@ -1,0 +1,128 @@
+@charset "UTF-8";
+
+.btn-group{
+	width: 60%;
+}
+table {
+	border-collapse: collapse;
+	border: none;
+	/* margin-left: 0; */
+}
+.container{
+	padding:0;
+}
+h2{
+	margin: 40px 0;
+	text-align: center;
+}
+.btn-group{
+	width:100%;
+	margin: 0 auto;
+}
+.btn{
+	 background-color: #666BCF;
+	 border-color: #666BCF;
+}
+.btn:hover{
+	background-color: #4e54c7;
+	border-color: #666BCF;
+}
+/* body1 - 정보수정 */
+#body1 h2{
+	margin: 0;
+}
+#body1{
+	width: 700px;
+	margin: 30px auto;
+	height: 100%;
+	border: 1px solid #eee;
+	border-radius: 30px;
+	padding: 30px;
+}
+#body1 input:nth-child(n+2):nth-child(-n+8){
+	padding-left: 5px;
+}
+#body1 td{
+	border:none;
+	margin: 0 auto;
+	padding: 15px 90px;
+}
+#body1 tr:last-child {
+	text-align: center;
+}
+#body1 tr:last-child input {
+	width: 120px;
+	height: 50px;
+	padding: 10px 0;
+	background-color: #CEBFEE; 
+	font-weight: 600;
+	border:none;
+	border-radius: 5px;
+	color: #fff;
+	margin: 0 5px;
+	font-size: 16px;
+}
+#body1 tr:last-child input:hover {
+	background-color: #666BCF;
+	color: #fff;
+	font-weight: 600;
+	/* hover 속도 좀 천천히 */
+	border:none;
+	transition: all 0.2s ease-out;
+}
+/* body2 - 리뷰관리 */
+#body2{
+	width: 700px;
+	margin: 30px auto;
+	height: 100%;
+	border: 1px solid #eee;
+	border-radius: 30px;
+	padding: 30px;
+}
+#body2 h2{
+	width:100%;
+	margin: 0;
+	text-align: center;
+}
+#body2 hr{
+	width:100%;
+	margin: 0 auto;
+}
+#body2 tr{
+	position: relative;
+	left: 50px;
+}
+#body2 tr td{
+	border:none;
+}
+/* body3 - 주문내역 */
+#body3{
+	width: 700px;
+	margin: 30px auto;
+	height: 100%;
+	border: 1px solid #eee;
+	border-radius: 30px;
+	padding: 30px;
+	text-align: center;
+}
+#body3 .body{
+	position: relative;
+	left: 190px;
+}
+.rBtn input {
+	width: 100px;
+	height: 35px;
+	background-color: #CEBFEE; 
+	border:none;
+	border-radius: 5px;
+	color: #fff;
+	margin: 0 5px;
+	font-size: 16px;
+}
+.rBtn input:hover {
+	background-color: #666BCF;
+	color: #fff;
+	/* hover 속도 좀 천천히 */
+	border:none;
+	transition: all 0.2s ease-out;
+}

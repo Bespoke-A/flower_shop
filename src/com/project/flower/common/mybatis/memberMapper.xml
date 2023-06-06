@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="member">
+	<select id="selectId" resultType="com.project.flower.member.vo.MemberVO">
+		SELECT * FROM MEMBER where USER_ID = #{test}
+	</select>
+	
+	<!-- USER_ID로 USER_ID 조회 -->
+	<select id="selectOneId" resultType="string" parameterType="string">
+		SELECT USER_ID FROM MEMBER WHERE USER_ID = #{ID}
+	</select>
+	
+	<!-- 회원가입정보 입력 -->
+	<insert id="insert" parameterType="com.project.flower.member.vo.MemberVO">
+		INSERT INTO MEMBER
+       		   (USER_ID, USER_PWD, USER_NAME, USER_PHONE, USER_BIRTH, USER_ADDR, USER_EMAIL)
+		VALUES (#{userId}, #{userPwd}, #{userName}, #{userPhone}, #{userBirth}, #{userAddr}, #{userEmail})
+	</insert>
+	<!-- 회원가입정보 변경 -->
+	<update id="update" parameterType="com.project.flower.member.vo.MemberVO">
+		UPDATE MEMBER
+       	SET USER_NAME = #{userName}, USER_PHONE = #{userPhone}, USER_BIRTH = #{userBirth}, USER_ADDR = #{userAddr}, USER_EMAIL = #{userEmail}
+		WHERE USER_ID = #{userId}
+	</update>
+	
+	<update id="updatePwd" parameterType="com.project.flower.member.vo.MemberVO">
+		UPDATE MEMBER
+       	SET USER_PWD = #{userPwd}
+		WHERE USER_ID = #{userId}
+	</update>
+	
+	<select id="selectReview" resultType="com.project.flower.member.vo.ReviewVO" parameterType="string">
+		SELECT F.F_NAME, R.* FROM REVIEW R, FLOWER F WHERE (R.F_ID = F.F_ID) AND (R.USER_ID =  #{userId})
+		ORDER BY COMMENT_DATE DESC
+	</select>
+	
+	<select id="findId" resultType="string" parameterType="com.project.flower.member.vo.MemberVO">
+		SELECT USER_ID FROM MEMBER WHERE USER_NAME = #{userName} AND USER_PHONE = #{userPhone} AND USER_EMAIL = #{userEmail}
+	</select>
+	
+	<select id="findPwd" resultType="string" parameterType="com.project.flower.member.vo.MemberVO">
+		SELECT USER_ID FROM MEMBER WHERE USER_ID = #{userId} AND USER_PHONE = #{userPhone} AND USER_EMAIL = #{userEmail}
+	</select>
+	
+	
+
+	<select id="selectPayId" resultType="com.project.flower.member.vo.PaymentVO" parameterType="int">
+		SELECT * FROM PAYMENT WHERE PAYMENT_ID = #{paymentId}
+	</select>
+	
+	<insert id="insertReview" parameterType="com.project.flower.member.vo.ReviewVO">
+		INSERT INTO REVIEW
+       		   (REVIEW_NUM, USER_ID, F_ID, C_COMMENT, F_STARPOINT)
+		VALUES (SEQ_REVIEW.NEXTVAL , #{userId}, #{fId}, #{cComment}, #{fStarpoint})
+	</insert>
+	
+	<select id="selectCart" resultType="com.project.flower.member.vo.CartVO" parameterType="String">
+		SELECT c.*, f.F_NAME, f.F_QUANT FROM CART c, FLOWER f WHERE f.F_ID = c.F_ID AND USER_ID = #{ID}
+	</select>
+	
+	<insert id="insertCart" parameterType="com.project.flower.member.vo.CartVO">
+		INSERT INTO CART (CART_NUM, USER_ID, F_ID, CNT_CART, F_PRICE, TOT_PRICE, F_THUMBNAIL)
+		VALUES (SEQ_CARTNUM.NEXTVAL, #{userId}, #{fId}, #{cntCart}, #{fPrice}, #{totPrice}, #{fThumbnail})
+	</insert>
+	
+	<!-- F_ID로 FLOWER 불러오기 -->
+	<select id="selectFlower" resultType="com.project.flower.member.vo.FlowerVO" parameterType="String">
+		SELECT * FROM FLOWER WHERE F_ID = #{ID}
+	</select>
+
+	<!-- F_ID로 F_ID 불러오기 -->
+	<select id="selectFid" resultType="String" parameterType="com.project.flower.member.vo.CartVO">
+		SELECT F_ID FROM CART WHERE (USER_ID = #{userId}) AND (F_ID = #{fId})
+	</select>
+	
+	<!-- F_ID로 cnt_cart 더하기 -->
+	<update id="updateCntCart" parameterType="com.project.flower.member.vo.CartVO">
+		UPDATE CART
+       	SET CNT_CART = (#{cntCart} + (select CNT_CART from CART WHERE (USER_ID = #{userId}) AND (F_ID = #{fId})))
+		WHERE (USER_ID = #{userId}) AND (F_ID = #{fId})
+	</update>
+	
+	<!-- USESR_ID로 장바구니 삭제 -->
+	<delete id="deleteCart" parameterType="String">
+		DELETE FROM CART WHERE USER_ID = #{ID}
+	</delete>
+	
+	<!-- USESR_ID로 장바구니 삭제 -->
+	<delete id="deleteOneCart" parameterType="com.project.flower.member.vo.CartVO">
+		DELETE FROM CART WHERE (USER_ID = #{userId}) AND (F_ID = #{fId})
+	</delete>
+	
+	<!--PAYMENT INSERT PICK -->
+	<insert id="insertPayPick" parameterType="com.project.flower.member.vo.PaymentVO">
+		INSERT INTO PAYMENT (PAYMENT_ID, USER_ID, PAYMENT_DATE, PAYMENT_SUDAN, PICK_DEL, F_ID, F_PRICE, CNT, TOT_PRICE, PICK_DAY)
+				     VALUES (SEQ_PAYMENT.NEXTVAL, #{userId}, sysdate, #{paymentSudan}, #{pickDel}, #{fId}, #{fPrice}, #{cnt}, #{totPrice}, #{pickDay})
+	</insert>
+	
+	<!--PAYMENT INSERT DEL -->
+	<insert id="insertPayDel" parameterType="com.project.flower.member.vo.PaymentVO">
+		INSERT INTO PAYMENT (PAYMENT_ID, USER_ID, PAYMENT_DATE, PAYMENT_SUDAN, PICK_DEL, F_ID, F_PRICE, CNT, TOT_PRICE, DEL_DAY)
+				     VALUES (SEQ_PAYMENT.NEXTVAL, #{userId}, sysdate, #{paymentSudan}, #{pickDel}, #{fId}, #{fPrice}, #{cnt}, #{totPrice}, #{delDay})
+	</insert>
+	
+	
+	
+	
+	
+	
+	<select id="selectOrder" resultType="com.project.flower.member.vo.PaymentVO" parameterType="String">
+		SELECT F.*, P.*, O.* FROM PAYMENT P, FLOWER F, ORDER_HISTORY O WHERE (P.PAYMENT_ID = O.PAYMENT_ID) AND (P.F_ID = F.F_ID) AND (P.USER_ID =  #{userId})
+		ORDER BY PAYMENT_DATE DESC
+	</select>
+	
+		<!-- USER_ID로 PAYMENT_ID 최근꺼 불러오기 -->
+	<select id="selectPid" resultType="com.project.flower.member.vo.PaymentVO" parameterType="String">
+		SELECT PAYMENT_ID FROM (SELECT PAYMENT_ID FROM PAYMENT WHERE USER_ID = #{ID} ORDER BY PAYMENT_DATE DESC) WHERE ROWNUM = 1 
+	</select>
+	
+	<!--ORDER_HISTORY INSERT -->
+	<insert id="insertOrder">
+		INSERT INTO ORDER_HISTORY (ORDER_NUM, PAYMENT_ID, COMPLETE)
+				     VALUES (SEQ_ORDERHISTORY.NEXTVAL, SEQ_PAYMENT.CURRVAL, '0')
+	</insert>
+	
+	<select id="getReview_ok" resultType="String" parameterType="int">
+		SELECT C_COMMENT 
+		FROM REVIEW R, PAYMENT P 
+		WHERE R.PAYMENT_ID = P.PAYMENT_ID
+		AND P.PAYMENT_ID = #{paymentId}
+	</select>
+	
+		<insert id="insertReviewPID" parameterType="com.project.flower.member.vo.ReviewVO">
+		INSERT INTO REVIEW (REVIEW_NUM, USER_ID, F_ID, PAYMENT_ID) VALUES (SEQ_REVIEW.NEXTVAL, #{userId}, #{fId}, SEQ_PAYMENT.CURRVAL)
+	</insert>
+	
+	
+	
+	
+	<!-- 재고변경 -->
+	<update id="updateQuant" parameterType="com.project.flower.member.vo.FlowerVO">
+		UPDATE FLOWER SET F_QUANT = ((SELECT F_QUANT FROM FLOWER WHERE F_ID = #{fId}) - #{fQuant}) WHERE F_ID = #{fId}
+	</update>
+	
+
+	
+	<update id="updateReview" parameterType="com.project.flower.member.vo.ReviewVO"> 
+		UPDATE REVIEW SET C_COMMENT = #{cComment}, F_STARPOINT = #{fStarpoint} WHERE PAYMENT_ID = #{paymentId}
+	</update>
+	
+
+	
+	<select id="selectCntCart" resultType="int" parameterType="com.project.flower.member.vo.CartVO">
+		SELECT CNT_CART FROM CART WHERE (USER_ID = #{userId}) AND (F_ID = #{fId})
+	</select>
+	
+	<update id="updateFullCnt" parameterType="com.project.flower.member.vo.CartVO">
+		UPDATE CART
+       	SET CNT_CART = #{cntCart}
+		WHERE (USER_ID = #{userId}) AND (F_ID = #{fId})
+	</update>
+	
+</mapper>
